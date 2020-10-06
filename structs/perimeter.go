@@ -11,3 +11,7 @@ func Area(r Rectangle) float64 {
 type Rectangle struct {
 	Length, Width float64
 }
+
+type Circle struct {
+	Radius float64
+}
