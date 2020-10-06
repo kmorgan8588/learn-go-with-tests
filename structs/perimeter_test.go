@@ -20,18 +20,25 @@ func TestRectanglePerimeter(t *testing.T) {
 	checkExpected(t, got, want)
 }
 
-func TestRectangleArea(t *testing.T) {
-	rectangle := Rectangle{Length: 2.0, Width: 4.0}
-	got := Area(rectangle)
-	want := 8.0
+func TestArea(t *testing.T) {
 
-	checkExpected(t, got, want)
-}
+	checkArea := func(t *testing.T, shape Shape, want float64) {
+		t.Helper()
 
-func TestCircleArea(t *testing.T) {
-	circle := Circle{10}
-	got := Area(circle)
-	want := math.Pi * 10
+		got := shape.Area()
 
-	checkExpected(t, got, want)
+		checkExpected(t, got, want)
+	}
+
+	t.Run("rectangles", func(t *testing.T) {
+		rectangle := Rectangle{Length: 2.0, Width: 4.0}
+		checkArea(t, rectangle, 8.0)
+	})
+
+	t.Run("circles", func(t *testing.T) {
+		circle := Circle{10}
+		want := math.Pi * 100
+
+		checkArea(t, circle, want)
+	})
 }
