@@ -10,14 +10,16 @@ func checkExpected(t *testing.T, got, want float64) {
 	}
 }
 func TestPerimeter(t *testing.T) {
-	got := Perimeter(10.0, 10.0)
+	rectangle := Rectangle{Length: 10.0, Width: 10.0}
+	got := Perimeter(rectangle)
 	want := 40.0
 
 	checkExpected(t, got, want)
 }
 
 func TestArea(t *testing.T) {
-	got := Area(2, 4)
+	rectangle := Rectangle{Length: 2.0, Width: 4.0}
+	got := Area(rectangle)
 	want := 8.0
 
 	checkExpected(t, got, want)
