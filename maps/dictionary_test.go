@@ -80,3 +80,26 @@ func assertNoError(t *testing.T, err error) {
 		t.Fatalf("encountered %q when no error should be found", err)
 	}
 }
+
+func TestUpdate(t *testing.T) {
+	t.Run("update exisiting definition", func(t *testing.T) {
+		key := "test"
+		value := "test time"
+		dictionary := Dictionary{key: value}
+		newValue := "updated test"
+
+		dictionary.Update(key, newValue)
+
+		assertDefinition(t, dictionary, key, newValue)
+	})
+
+	t.Run("new word", func(t *testing.T) {
+		key := "test"
+		value := "test time"
+		dictionary := Dictionary{}
+
+		err := dictionary.Update(key, value)
+
+		assertError(t, err, ErrWordDoesNotExist)
+	})
+}
