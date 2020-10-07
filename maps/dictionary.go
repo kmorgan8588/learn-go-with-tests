@@ -1,5 +1,6 @@
 package maps
 
+// Dictionary is a map for key value pairs for defining terms
 type Dictionary map[string]string
 
 type DictionaryErr string
@@ -24,6 +25,7 @@ func (d Dictionary) Search(key string) (string, error) {
 	return definition, nil
 }
 
+// Add creates a new key value pair in a Dictionary, only if the key is unique
 func (d Dictionary) Add(key, value string) error {
 	_, err := d.Search(key)
 
@@ -38,6 +40,7 @@ func (d Dictionary) Add(key, value string) error {
 	return nil
 }
 
+// Update changes the definition for a given key with a new value, only if it exists already
 func (d Dictionary) Update(key, value string) error {
 	_, err := d.Search(key)
 
@@ -51,4 +54,9 @@ func (d Dictionary) Update(key, value string) error {
 	}
 
 	return nil
+}
+
+// Delete removes an entry from the Dictionary given a key, it does not care if the key exists already or not since the default behavior is desired
+func (d Dictionary) Delete(key string) {
+	delete(d, key)
 }

@@ -103,3 +103,29 @@ func TestUpdate(t *testing.T) {
 		assertError(t, err, ErrWordDoesNotExist)
 	})
 }
+
+func TestDelete(t *testing.T) {
+	t.Run("deletes an entry", func(t *testing.T) {
+		key := "test"
+		dictionary := Dictionary{key: "test"}
+
+		dictionary.Delete(key)
+
+		_, err := dictionary.Search(key)
+		if err != ErrNotFound {
+			t.Errorf("Expected %q to be deleted", key)
+		}
+	})
+
+	t.Run("delete on empty map", func(t *testing.T) {
+		key := "test"
+		dictionary := Dictionary{}
+
+		dictionary.Delete(key)
+
+		_, err := dictionary.Search(key)
+		if err != ErrNotFound {
+			t.Errorf("Expected %q to be deleted", key)
+		}
+	})
+}
