@@ -1,10 +1,17 @@
 package maps
 
-import "errors"
-
 type Dictionary map[string]string
 
-var ErrNotFound = errors.New("could not find the word you were looking for")
+type DictionaryErr string
+
+const (
+	ErrNotFound   = DictionaryErr("could not find the word you were looking for")
+	ErrWordExists = DictionaryErr("word already defined")
+)
+
+func (e DictionaryErr) Error() string {
+	return string(e)
+}
 
 // Search takes a key and returns the value associated to it in a dictionary
 func (d Dictionary) Search(key string) (string, error) {
@@ -16,6 +23,16 @@ func (d Dictionary) Search(key string) (string, error) {
 	return definition, nil
 }
 
-func (d Dictionary) Add(key, value string) {
-	d[key] = value
+func (d Dictionary) Add(key, value string) error {
+	_, err := d.Search(key)
+
+	switch err {
+	case ErrNotFound:
+		d[key] = value
+	case nil:
+		return ErrWordExists
+	default:
+		return err
+	}
+	return nil
 }

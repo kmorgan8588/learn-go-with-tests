@@ -13,6 +13,17 @@ func TestAdd(t *testing.T) {
 
 		assertDefinition(t, dictionary, key, value)
 	})
+
+	t.Run("existing word", func(t *testing.T) {
+		key := "test"
+		value := "this is a test"
+		dictionary := Dictionary{key: value}
+
+		err := dictionary.Add(key, "new test")
+
+		assertError(t, err, ErrWordExists)
+		assertDefinition(t, dictionary, key, value)
+	})
 }
 
 func assertDefinition(t *testing.T, d Dictionary, key, value string) {
