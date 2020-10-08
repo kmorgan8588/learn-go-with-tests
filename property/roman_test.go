@@ -3,22 +3,22 @@ package property
 import "testing"
 
 func TestRoman(t *testing.T) {
-	t.Run("converts 1", func(t *testing.T) {
-		want := "I"
-		got := ConvertToRoman(1)
+	cases := []struct {
+		Description string
+		Arabic      int
+		Want        string
+	}{
+		{"converts 1", 1, "I"},
+		{"converts 2", 2, "II"},
+	}
 
-		if got != want {
-			t.Errorf(`got "%s", want "%s"`, got, want)
-		}
-	})
+	for _, test := range cases {
+		t.Run(test.Description, func(t *testing.T) {
+			got := ConvertToRoman(test.Arabic)
 
-	t.Run("converts 2", func(t *testing.T) {
-		want := "II"
-		got := ConvertToRoman(2)
-
-		if got != want {
-			t.Errorf(`got "%s", want "%s"`, got, want)
-		}
-	})
-
+			if got != test.Want {
+				t.Errorf(`got "%s", want "%s"`, got, test.Want)
+			}
+		})
+	}
 }
