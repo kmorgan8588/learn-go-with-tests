@@ -1,6 +1,9 @@
 package sync
 
-import "testing"
+import (
+	"sync"
+	"testing"
+)
 
 func TestCounter(t *testing.T) {
 	t.Run("increment 3 times", func(t *testing.T) {
@@ -9,8 +12,33 @@ func TestCounter(t *testing.T) {
 		counter.Inc()
 		counter.Inc()
 
-		if counter.Value() != 3 {
-			t.Errorf("got %d, want %d", counter.Value(), 3)
-		}
+		assertCounter(t, counter, 3)
 	})
+
+	t.Run("it runs safely concurrently", func(t *testing.T) {
+		counter := Counter{}
+		wantedCount := 1000
+
+		var wg sync.WaitGroup
+		wg.Add(wantedCount)
+
+		for i := 0; i < wantedCount; i++ {
+			go func(w *sync.WaitGroup) {
+				counter.Inc()
+				w.Done()
+			}(&wg)
+		}
+		wg.Wait()
+
+		assertCounter(t, counter, wantedCount)
+	})
+
+}
+
+func assertCounter(t *testing.T, got Counter, want int) {
+	t.Helper()
+
+	if got.Value() != want {
+		t.Errorf("got %d, want %d", got.Value(), want)
+	}
 }
